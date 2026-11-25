@@ -252,28 +252,69 @@ html.vis-only #app-shell, html.vis-only #site-header, html.vis-only #player { op
 }
 
 /* ---------- Christmas fairy lights ---------- */
+/* Shared light materials keep both strings and message frames consistent. */
+:root {
+  --fairy-wire: color-mix(in oklch, var(--acid) 22%, var(--graphite));
+  --fairy-socket: color-mix(in oklch, var(--acid) 16%, var(--background));
+}
 @keyframes bulb-twinkle {
-  0%, 100% { opacity: 1; filter: brightness(1.15); }
-  50% { opacity: 0.45; filter: brightness(0.7); }
+  0%, 100% { filter: brightness(1.12); opacity: 1; }
+  50% { filter: brightness(0.82); opacity: 0.85; }
 }
-@keyframes fairy-glow-pulse {
-  0%, 100% { opacity: 0.75; }
-  50% { opacity: 0.35; }
+.fairy-wire { stroke: var(--fairy-wire); }
+.fairy-bulb {
+  --bulb-color: var(--sun);
+  --fairy-bulb-glass: radial-gradient(ellipse at 32% 25%, var(--foreground) 0%, color-mix(in oklch, var(--foreground) 65%, var(--bulb-color)) 12%, var(--bulb-color) 42%, color-mix(in oklch, var(--bulb-color) 68%, var(--background)) 100%);
+  --fairy-bulb-glow: 0 0 6px var(--bulb-color), 0 0 16px color-mix(in oklch, var(--bulb-color) 80%, transparent), 0 0 30px color-mix(in oklch, var(--bulb-color) 35%, transparent);
+  position: absolute;
+  display: block;
+  width: 10px;
+  height: 17px;
+  border-radius: 45% 45% 50% 50% / 32% 32% 68% 68%;
+  background: var(--fairy-bulb-glass);
+  box-shadow: var(--fairy-bulb-glow);
+  transform: translateX(-50%);
+  animation: bulb-twinkle 3.8s ease-in-out infinite;
+  pointer-events: none;
 }
-.fairy-bulb { animation: bulb-twinkle 2.4s ease-in-out infinite; }
-.fairy-glow { animation: fairy-glow-pulse 3.4s ease-in-out infinite; }
+.fairy-bulb--red { --bulb-color: var(--destructive); }
+.fairy-bulb--gold { --bulb-color: var(--sun); }
+.fairy-bulb--blue { --bulb-color: var(--cyan); }
+.fairy-bulb--green { --bulb-color: var(--acid); }
+.fairy-bulb--pink { --bulb-color: var(--pink); }
 .fairy-bulb::before {
   content: "";
   position: absolute;
   left: 50%;
-  top: -4px;
-  width: 2px;
-  height: 4px;
+  top: -5px;
+  width: 7px;
+  height: 6px;
+  border-radius: 2px 2px 0 0;
   transform: translateX(-50%);
-  background: var(--graphite);
+  background: var(--fairy-socket);
+  border-top: 1px solid var(--chrome);
 }
+.fairy-bulb::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  width: 2px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--foreground);
+  opacity: 0.75;
+}
+.fairy-bulb--left { transform: translate(-100%, -50%) rotate(90deg); }
+.fairy-bulb--right { transform: translate(0, -50%) rotate(-90deg); }
+.fairy-string .fairy-bulb { width: 11px; height: 20px; }
 html.calm .fairy-bulb { animation: none !important; }
-html.calm .fairy-glow { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .fairy-bulb { animation: none !important; }
+}
+@media (max-width: 767px) {
+  .fairy-string .fairy-bulb:nth-of-type(even) { display: none; }
+}
 
 /* ---------- Calm mode ---------- */
 html.calm .neon, html.calm .on-air, html.calm .live-border, html.calm .logo-badge, html.calm .grain { animation: none !important; }

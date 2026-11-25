@@ -1,11 +1,12 @@
-import { useEffect, useState, type ReactNode, type CSSProperties } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouterState } from "@tanstack/react-router";
 import { Gift, X } from "lucide-react";
-import { CONFIG, PALETTE } from "@/config";
+import { CONFIG } from "@/config";
+import { Button } from "@/components/ui/button";
 
-const BULB_COLORS = [PALETTE.pink, PALETTE.yellow, PALETTE.cyan, PALETTE.green, PALETTE.violet, PALETTE.orange];
-const BULBS = 26;
+const BULB_TONES = ["red", "gold", "blue", "green", "pink", "gold"];
+const BULBS = 38;
 const WIRE_W = 1440;
 const WIRE_H = 56;
 const SAG = 16;
@@ -17,6 +18,13 @@ function wireY(t: number) {
   return 4 * seg * (1 - seg) * SAG;
 }
 
+function Bulb({ left, top, index, side = "down" }: { left: string; top: string; index: number; side?: "down" | "left" | "right" }) {
+  return (
+    <span aria-hidden className={`fairy-bulb fairy-bulb--${BULB_TONES[index % BULB_TONES.length] ?? "gold"} fairy-bulb--${side}`}
+      style={{ left, top, animationDelay: `${(index % 9) * -0.43}s` }} />
+  );
+}
+
 function FairyLights() {
   const points = Array.from({ length: 49 }, (_, i) => {
     const t = i / 48;
@@ -24,26 +32,13 @@ function FairyLights() {
   }).join(" ");
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-x-0 top-14 z-50 h-10 md:top-16">
+    <div aria-hidden className="fairy-string pointer-events-none fixed inset-x-0 top-14 z-50 h-10 md:top-16">
       <svg className="absolute inset-0 h-full w-full" viewBox={`0 0 ${WIRE_W} ${WIRE_H}`} preserveAspectRatio="none">
-        <polyline points={points} fill="none" stroke="var(--graphite)" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+        <polyline className="fairy-wire" points={points} fill="none" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
       </svg>
       {Array.from({ length: BULBS }, (_, i) => {
         const t = (i + 0.5) / BULBS;
-        const color = BULB_COLORS[i % BULB_COLORS.length]!;
-        return (
-          <span
-            key={i}
-            className="fairy-bulb absolute block h-[11px] w-[7px] -translate-x-1/2 rounded-[50%_50%_45%_45%]"
-            style={{
-              left: `${t * 100}%`,
-              top: `${(wireY(t) / WIRE_H) * 100}%`,
-              background: color,
-              boxShadow: `0 0 8px ${color}, 0 0 18px ${color}66`,
-              animationDelay: `${(i % 7) * 0.35}s`,
-            }}
-          />
-        );
+        return <Bulb key={i} left={`${t * 100}%`} top={`${(wireY(t) / WIRE_H) * 100}%`} index={i} />;
       })}
     </div>
   );
@@ -58,16 +53,6 @@ const topY = (t: number) => TOP_T + 4 * TOP_S * t * (1 - t);
 const botY = (t: number) => BOT_T + 4 * BOT_S * t * (1 - t);
 const sideY = (t: number) => TOP_T + (BOT_T - TOP_T) * t;
 
-function bulbStyle(left: string, top: string, color: string, i: number): CSSProperties {
-  return {
-    left,
-    top,
-    background: color,
-    boxShadow: `0 0 8px ${color}, 0 0 18px ${color}66`,
-    animationDelay: `${(i % 7) * 0.35}s`,
-  };
-}
-
 /** A card strung with fairy lights: drooping wire top and bottom, straight runs down the sides. */
 function LightsAround({ children, className = "" }: { children: ReactNode; className?: string }) {
   const top = Array.from({ length: 13 }, (_, i) => (i + 0.5) / 13);
@@ -75,12 +60,7 @@ function LightsAround({ children, className = "" }: { children: ReactNode; class
   const side = Array.from({ length: 5 }, (_, i) => (i + 0.5) / 5);
 
   return (
-    <div className={`relative p-5 ${className}`}>
-      <div
-        aria-hidden
-        className="fairy-glow pointer-events-none absolute -inset-4 -z-10 rounded-[36px] blur-2xl"
-        style={{ background: `radial-gradient(55% 60% at 50% 50%, ${PALETTE.pink}55, ${PALETTE.violet}22 55%, transparent 78%)` }}
-      />
+    <div className={`fairy-frame relative p-6 ${className}`}>
       <svg
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
@@ -90,43 +70,15 @@ function LightsAround({ children, className = "" }: { children: ReactNode; class
         <path
           d={`M 0 ${TOP_T} Q 50 ${TOP_T + 2 * TOP_S} 100 ${TOP_T} L 100 ${BOT_T} Q 50 ${BOT_T + 2 * BOT_S} 0 ${BOT_T} Z`}
           fill="none"
-          stroke="var(--graphite)"
-          strokeWidth="2"
+          className="fairy-wire"
+          strokeWidth="2.5"
           vectorEffect="non-scaling-stroke"
         />
       </svg>
-      {top.map((t, i) => (
-        <span
-          key={`t${i}`}
-          aria-hidden
-          className="fairy-bulb absolute block h-[11px] w-[7px] -translate-x-1/2 rounded-[50%_50%_45%_45%]"
-          style={bulbStyle(`${t * 100}%`, `calc(${topY(t)}% + 2px)`, BULB_COLORS[i % BULB_COLORS.length]!, i)}
-        />
-      ))}
-      {bottom.map((t, i) => (
-        <span
-          key={`b${i}`}
-          aria-hidden
-          className="fairy-bulb absolute block h-[11px] w-[7px] -translate-x-1/2 rounded-[50%_50%_45%_45%]"
-          style={bulbStyle(`${t * 100}%`, `calc(${botY(t)}% + 2px)`, BULB_COLORS[(i + 3) % BULB_COLORS.length]!, i + 2)}
-        />
-      ))}
-      {side.map((t, i) => (
-        <span
-          key={`l${i}`}
-          aria-hidden
-          className="fairy-bulb absolute block h-[11px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-[50%_50%_45%_45%]"
-          style={bulbStyle("0%", `${sideY(t)}%`, BULB_COLORS[(i + 1) % BULB_COLORS.length]!, i + 4)}
-        />
-      ))}
-      {side.map((t, i) => (
-        <span
-          key={`r${i}`}
-          aria-hidden
-          className="fairy-bulb absolute block h-[11px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-[50%_50%_45%_45%]"
-          style={bulbStyle("100%", `${sideY(t)}%`, BULB_COLORS[(i + 4) % BULB_COLORS.length]!, i + 6)}
-        />
-      ))}
+      {top.map((t, i) => <Bulb key={`t${i}`} left={`${t * 100}%`} top={`${topY(t)}%`} index={i} />)}
+      {bottom.map((t, i) => <Bulb key={`b${i}`} left={`${t * 100}%`} top={`${botY(t)}%`} index={i + 3} />)}
+      {side.map((t, i) => <Bulb key={`l${i}`} left="0%" top={`${sideY(t)}%`} index={i + 1} side="right" />)}
+      {side.map((t, i) => <Bulb key={`r${i}`} left="100%" top={`${sideY(t)}%`} index={i + 4} side="left" />)}
       <div className="relative">{children}</div>
     </div>
   );
@@ -197,13 +149,15 @@ export function Christmas() {
           >
             <LightsAround>
               <div className="panel-solid pink-line relative rounded-2xl px-5 py-5 text-center shadow-2xl">
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={dismiss}
                   aria-label="Dismiss Christmas message"
                   className="absolute right-3 top-3 rounded p-1 text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <X className="h-4 w-4" />
-                </button>
+                </Button>
                 <Gift className="mx-auto h-6 w-6 text-pink" aria-hidden />
                 <p className="font-slant mt-2 text-2xl md:text-3xl">{CONFIG.CHRISTMAS.TITLE}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{CONFIG.CHRISTMAS.MESSAGE}</p>

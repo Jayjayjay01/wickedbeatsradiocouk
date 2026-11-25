@@ -5,3 +5,4 @@
 - [x] Add Christmas lights and a Christmas message from the Wicked Beats Radio DJs on all pages
 - [x] Put the Christmas message on the station homepage with lights strung around it; keep the lights clear of the navigation
 - [x] Verify build and tests, then commit
+- [x] Upgrade Christmas bulbs and wire on all pages; verify desktop and phone views

@@ -16,3 +16,5 @@
 - All canvas work runs through the single RAF loop in `src/lib/loop.ts`; per-frame audio data is the mutable `signal` singleton in `src/lib/signal.ts` (no React state per frame).
 - Schedule is read from the `schedule_entries` table (public read, admin write) with a built-in fallback in `src/lib/schedule.ts`; times are Europe/London.
 - Forms insert directly from the browser under insert-only RLS; admin access is via `user_roles` (first signed-up account becomes admin).
+
+- Christmas strings and message frames share the Bulb renderer and CSS light-material tokens so their appearance and motion preferences stay consistent.

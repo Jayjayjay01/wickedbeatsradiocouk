@@ -282,6 +282,8 @@ html.vis-only #app-shell, html.vis-only #site-header, html.vis-only #player { op
 .fairy-bulb--blue { --bulb-color: var(--cyan); }
 .fairy-bulb--green { --bulb-color: var(--acid); }
 .fairy-bulb--pink { --bulb-color: var(--pink); }
+.fairy-bulb--violet { --bulb-color: var(--violet); }
+.fairy-bulb--orange { --bulb-color: var(--ember); }
 .fairy-bulb::before {
   content: "";
   position: absolute;
@@ -307,13 +309,61 @@ html.vis-only #app-shell, html.vis-only #site-header, html.vis-only #player { op
 }
 .fairy-bulb--left { transform: translate(-100%, -50%) rotate(90deg); }
 .fairy-bulb--right { transform: translate(0, -50%) rotate(-90deg); }
-.fairy-string .fairy-bulb { width: 11px; height: 20px; }
+/* Four-edge frame follows the supplied Christmas light reference. */
+.fairy-screen-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  overflow: hidden;
+  pointer-events: none;
+}
+.fairy-screen-wire {
+  position: absolute;
+  inset: 13px;
+  border: 3px solid var(--fairy-wire);
+  box-shadow: 0 1px 3px var(--chrome);
+}
+.fairy-screen-row {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.fairy-screen-row--top, .fairy-screen-row--bottom {
+  left: 1%;
+  width: 98%;
+  height: 35px;
+}
+.fairy-screen-row--top { top: 12px; }
+.fairy-screen-row--bottom { bottom: 12px; }
+.fairy-screen-row--left, .fairy-screen-row--right {
+  top: 2%;
+  bottom: 2%;
+  width: 35px;
+  flex-direction: column;
+}
+.fairy-screen-row--left { left: 12px; }
+.fairy-screen-row--right { right: 12px; }
+.fairy-screen-row .fairy-bulb {
+  position: relative;
+  width: 15px;
+  height: 23px;
+  flex-shrink: 0;
+  transform: none;
+  --fairy-bulb-glow: 0 0 7px var(--bulb-color), 0 0 15px var(--bulb-color), 0 0 30px color-mix(in oklch, var(--bulb-color) 75%, transparent), 0 0 45px color-mix(in oklch, var(--bulb-color) 40%, transparent);
+  animation: screen-bulb-twinkle 1.4s ease-in-out infinite alternate;
+}
+@keyframes screen-bulb-twinkle {
+  from { opacity: 0.45; filter: brightness(0.8); transform: scale(0.85); }
+  to { opacity: 1; filter: brightness(1.8); transform: scale(1.15); }
+}
 html.calm .fairy-bulb { animation: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .fairy-bulb { animation: none !important; }
 }
-@media (max-width: 767px) {
-  .fairy-string .fairy-bulb:nth-of-type(even) { display: none; }
+@media (max-width: 600px) {
+  .fairy-screen-row .fairy-bulb { width: 10px; height: 17px; }
+  .fairy-screen-row--left, .fairy-screen-row--right { width: 25px; }
 }
 
 /* ---------- Calm mode ---------- */

@@ -5,18 +5,8 @@ import { Gift, X } from "lucide-react";
 import { CONFIG } from "@/config";
 import { Button } from "@/components/ui/button";
 
-const BULB_TONES = ["red", "gold", "blue", "green", "pink", "gold"];
-const BULBS = 38;
-const WIRE_W = 1440;
-const WIRE_H = 56;
-const SAG = 16;
+const BULB_TONES = ["red", "green", "blue", "gold", "violet", "orange"];
 const STORAGE_KEY = "wb-xmas-2026-dismissed";
-
-/** Two drooping swags: parabola per half, 0 at each fixing point. */
-function wireY(t: number) {
-  const seg = t < 0.5 ? t * 2 : (t - 0.5) * 2;
-  return 4 * seg * (1 - seg) * SAG;
-}
 
 function Bulb({ left, top, index, side = "down" }: { left: string; top: string; index: number; side?: "down" | "left" | "right" }) {
   return (
@@ -26,20 +16,16 @@ function Bulb({ left, top, index, side = "down" }: { left: string; top: string; 
 }
 
 function FairyLights() {
-  const points = Array.from({ length: 49 }, (_, i) => {
-    const t = i / 48;
-    return `${(t * WIRE_W).toFixed(1)},${wireY(t).toFixed(1)}`;
-  }).join(" ");
-
   return (
-    <div aria-hidden className="fairy-string pointer-events-none fixed inset-x-0 top-14 z-50 h-10 md:top-16">
-      <svg className="absolute inset-0 h-full w-full" viewBox={`0 0 ${WIRE_W} ${WIRE_H}`} preserveAspectRatio="none">
-        <polyline className="fairy-wire" points={points} fill="none" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
-      </svg>
-      {Array.from({ length: BULBS }, (_, i) => {
-        const t = (i + 0.5) / BULBS;
-        return <Bulb key={i} left={`${t * 100}%`} top={`${(wireY(t) / WIRE_H) * 100}%`} index={i} />;
-      })}
+    <div aria-hidden className="fairy-screen-frame">
+      <div className="fairy-screen-wire" />
+      {(["top", "bottom", "left", "right"] as const).map((edge) => (
+        <div key={edge} className={`fairy-screen-row fairy-screen-row--${edge}`}>
+          {Array.from({ length: edge === "top" || edge === "bottom" ? 20 : 8 }, (_, i) => (
+            <Bulb key={i} left="auto" top="auto" index={i} />
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

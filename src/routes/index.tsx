@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { BrushDivider, CountUp, Logo, Magnetic, Reveal, SectionLabel, SlashHeading, SpeakerRings, Wordmark } from "@/components/brand";
 import { OnAirCard } from "@/components/OnAirCard";
+import { ChristmasHero } from "@/components/layout/Christmas";
 import { Button } from "@/components/ui/button";
 import { CONFIG } from "@/config";
 import { useAudio } from "@/lib/audio";
@@ -33,7 +34,7 @@ function Hero() {
   const y = useTransform(scrollY, [0, 600], [0, 120]);
   const o = useTransform(scrollY, [0, 500], [1, 0.3]);
   return (
-    <section className="relative flex flex-col items-center justify-center px-4 pb-12 pt-20 md:min-h-[100svh] md:pb-16 md:pt-24 text-center">
+    <section className="relative flex flex-col items-center justify-center px-4 pb-12 pt-24 md:min-h-[100svh] md:pb-16 md:pt-28 text-center">
       <motion.div style={{ y, opacity: o }} className="relative mb-4 w-[min(55vw,300px)] md:mb-6 md:w-[min(64vw,300px)]">
         <SpeakerRings />
         <div className="relative aspect-square">
@@ -61,6 +62,7 @@ function Hero() {
           </Button>
         </Magnetic>
       </div>
+      <ChristmasHero />
       <div className="mt-8 grid w-full max-w-4xl grid-cols-2 gap-2 md:mt-12 md:gap-3 md:grid-cols-4">
         {STATS.map((s, i) => (
           <Reveal key={s.l} delay={i * 0.08}>

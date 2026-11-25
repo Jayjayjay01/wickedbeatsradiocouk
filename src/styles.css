@@ -143,6 +143,11 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
+/* Opaque version for overlays that sit on top of busy page content. */
+@utility panel-solid {
+  background: oklch(0.13 0.005 286);
+  border: 1px solid var(--graphite);
+}
 @utility pink-line {
   position: relative;
   &::before {
@@ -251,7 +256,12 @@ html.vis-only #app-shell, html.vis-only #site-header, html.vis-only #player { op
   0%, 100% { opacity: 1; filter: brightness(1.15); }
   50% { opacity: 0.45; filter: brightness(0.7); }
 }
+@keyframes fairy-glow-pulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 0.35; }
+}
 .fairy-bulb { animation: bulb-twinkle 2.4s ease-in-out infinite; }
+.fairy-glow { animation: fairy-glow-pulse 3.4s ease-in-out infinite; }
 .fairy-bulb::before {
   content: "";
   position: absolute;
@@ -263,6 +273,7 @@ html.vis-only #app-shell, html.vis-only #site-header, html.vis-only #player { op
   background: var(--graphite);
 }
 html.calm .fairy-bulb { animation: none !important; }
+html.calm .fairy-glow { animation: none !important; }
 
 /* ---------- Calm mode ---------- */
 html.calm .neon, html.calm .on-air, html.calm .live-border, html.calm .logo-badge, html.calm .grain { animation: none !important; }

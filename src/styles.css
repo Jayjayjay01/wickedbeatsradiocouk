@@ -246,6 +246,24 @@ html.vis-only #app-shell, html.vis-only #site-header, html.vis-only #player { op
   &::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 9999px; background: var(--pink); cursor: pointer; }
 }
 
+/* ---------- Christmas fairy lights ---------- */
+@keyframes bulb-twinkle {
+  0%, 100% { opacity: 1; filter: brightness(1.15); }
+  50% { opacity: 0.45; filter: brightness(0.7); }
+}
+.fairy-bulb { animation: bulb-twinkle 2.4s ease-in-out infinite; }
+.fairy-bulb::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 2px;
+  height: 4px;
+  transform: translateX(-50%);
+  background: var(--graphite);
+}
+html.calm .fairy-bulb { animation: none !important; }
+
 /* ---------- Calm mode ---------- */
 html.calm .neon, html.calm .on-air, html.calm .live-border, html.calm .logo-badge, html.calm .grain { animation: none !important; }
 @media (prefers-reduced-motion: reduce) {

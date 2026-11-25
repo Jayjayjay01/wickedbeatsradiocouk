@@ -35,6 +35,14 @@ export const CONFIG = {
   FLAG_COUNTER_LINK: "https://info.flagcounter.com/eSaF",
   FLAG_COUNTER_IMG:
     "https://s05.flagcounter.com/count2/eSaF/bg_000000/txt_0AFF12/border_FF491C/columns_8/maxflags_50/viewers_0/labels_1/pageviews_1/flags_0/percent_0/",
+  /** Festive season: snow, fairy lights and the DJs' Christmas message on every page. Set ENABLED to false to switch it all off. */
+  CHRISTMAS: {
+    ENABLED: true,
+    TITLE: "Merry Christmas from Wicked Beats Radio",
+    MESSAGE:
+      "From Danny and every Wicked Beats DJ, thank you for listening this year. Keep it locked for festive sets, big tunes and good vibes all the way into the New Year.",
+    SIGN_OFF: "— The Wicked Beats Radio DJs",
+  },
   GENRES: [
     { name: "Reggae", tag: "Roots & Culture", color: "#0AFF12", img: "https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/4b382d36-1f1b-4f3f-c6b2-de96d7ffc600/public" },
     { name: "Dancehall", tag: "Island Energy", color: "#FFD60A", img: "https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/f026a28f-b7a8-4d56-8c87-d56858862800/public" },

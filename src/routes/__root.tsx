@@ -17,6 +17,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { FxProvider } from "@/lib/fx";
 import { AudioProvider } from "@/lib/audio";
 import { Scene } from "@/components/fx/Scene";
+import { Snow } from "@/components/fx/Snow";
+import { Christmas } from "@/components/layout/Christmas";
 import { Header } from "@/components/layout/Header";
 import { Player } from "@/components/layout/Player";
 import { Footer } from "@/components/layout/Footer";
@@ -143,6 +145,8 @@ function RootComponent() {
         <AudioProvider>
           {/* Persistent layer: never unmounts on navigation */}
           <Scene />
+          <Snow />
+          <Christmas />
           <Header />
           <div id="app-shell" className="relative z-10">
             <motion.main key={path} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.25, ease: [0.2, 0.7, 0.2, 1] }}>

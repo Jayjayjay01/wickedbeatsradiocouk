@@ -6,3 +6,4 @@
 - [x] Put the Christmas message on the station homepage with lights strung around it; keep the lights clear of the navigation
 - [x] Verify build and tests, then commit
 - [x] Upgrade Christmas bulbs and wire on all pages; verify desktop and phone views
+- [x] Take the fairy lights off the Christmas message card (keep the lights around the page edges)

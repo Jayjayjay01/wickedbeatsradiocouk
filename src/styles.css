@@ -261,7 +261,6 @@ html.vis-only #app-shell, html.vis-only #site-header, html.vis-only #player { op
   0%, 100% { filter: brightness(1.12); opacity: 1; }
   50% { filter: brightness(0.82); opacity: 0.85; }
 }
-.fairy-wire { stroke: var(--fairy-wire); }
 .fairy-bulb {
   --bulb-color: var(--sun);
   --fairy-bulb-glass: radial-gradient(ellipse at 32% 25%, var(--foreground) 0%, color-mix(in oklch, var(--foreground) 65%, var(--bulb-color)) 12%, var(--bulb-color) 42%, color-mix(in oklch, var(--bulb-color) 68%, var(--background)) 100%);
